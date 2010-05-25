@@ -1,0 +1,19 @@
+Git todo
+
+* Initialize git: 
+
+  git init
+
+* Ignore files & folders: 
+
+  vi .gitignore
+
+* First commit
+
+* Checkout to a working branch and develop application
+
+* Commit often
+
+* Git rebase interactively with local master
+
+* Git rebase INTO local master
