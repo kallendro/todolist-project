@@ -1,0 +1,15 @@
+<table>
+<tr>
+  <th>Todo</th>
+  <th>Action</th>
+</tr>
+<% for todo in @todos %>
+<tr>
+  <td><%= link_to todo.subject, todo_path(todo) %> </td>
+  <td><%= link_to "edit", edit_todo_path(todo) %>
+      <%= link_to "delete", todo_path(todo), :method => :delete %> 
+  </td>
+</tr>
+<% end %>
+</table>
+<%= link_to "Create New", new_list_todo_path(@list) %>

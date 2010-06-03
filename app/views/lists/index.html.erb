@@ -1,0 +1,15 @@
+<table>
+<tr>
+  <th>List</th>
+  <th>Action</th>
+</tr>
+<% for list in @lists %>
+<tr>
+  <td><%= link_to list.subject, list_path(list) %> </td>
+  <td><%= link_to "edit", edit_list_path(list) %>
+      <%= link_to "delete", list_path(list), :method => :delete %> 
+  </td>
+</tr>
+<% end %>
+</table>
+<%= link_to "Create New", new_list_path %>

@@ -1,0 +1,5 @@
+<% form_for @todo, :url => list_todo_path(@list), :html => {:method => :put} do |form| %>
+  <%= form.label :subject %>
+  <%= form.text_field :subject %>
+  <%= form.submit "Update" %>
+<% end %>

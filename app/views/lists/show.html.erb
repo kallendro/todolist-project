@@ -1,0 +1,9 @@
+subject: <%= @list.subject %> <br/>
+Todos:<br/>
+<% for todo in @list.todos %>
+<%= link_to todo.subject, edit_list_todo_path(@list, todo) %> 
+<%= link_to "Delete", list_todo_path(@list, todo), :method => :delete %><br/>
+<% end%>
+<br/>
+<%= link_to "new todo", new_list_todo_path(@list) %>
+<%= link_to "Back", lists_path %> 
