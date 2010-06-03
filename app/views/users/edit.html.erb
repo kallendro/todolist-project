@@ -1,0 +1,11 @@
+<% form_for @user do |form| %>
+  <%= form.label :username %>
+  <%= form.text_field :username %>
+  <%= form.label :firstname %>
+  <%= form.text_field :firstname %>
+  <%= form.label :lastname %>
+  <%= form.text_field :lastname %>
+  <%= form.label :dob %>
+  <%= form.text_field :dob %>
+  <%= form.submit "Update" %>
+<% end %>

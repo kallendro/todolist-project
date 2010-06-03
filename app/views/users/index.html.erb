@@ -1,0 +1,21 @@
+<table>
+<tr>
+  <th>username</th>
+  <th>first name</th>
+  <th>last name</th>
+  <th>date of birth</th>
+  <th>Action</th>
+</tr>
+<% for user in @users %>
+<tr>
+  <td><%= link_to user.username, user_path(user) %> </td>
+  <td><%= user.firstname %></td>
+  <td><%= user.lastname %></td>
+  <td><%= user.dob %></td>
+  <td><%= link_to "edit", edit_user_path(user) %>
+      <%= link_to "delete", user_path(user), :method => :delete %> 
+  </td>
+</tr>
+<% end %>
+</table>
+<%= link_to "Create New", new_user_path %>
