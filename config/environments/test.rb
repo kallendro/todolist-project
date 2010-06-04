@@ -28,4 +28,4 @@ config.action_mailer.delivery_method = :test
 # config.active_record.schema_format = :sql
 
 config.gem "shoulda", :version => '2.10.3'
-
+config.gem "factory_girl", :source => "http://gemcutter.org"

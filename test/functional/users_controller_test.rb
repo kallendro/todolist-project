@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   test "index action should retrieve all users" do
-    User.create(:username => 'kallendro', :password => 'kallendro', :firstname => 'kelvin', :lastname => 'susetyo', :dob => '3-9-1986')
+    Factory(:user)
     # Index action does exist in controller
     # Index view is present
     get :index
@@ -42,14 +42,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "edit action should present an edit form" do
-    user = User.create(
-      :username => "Whatever lah", 
-      :password => "aaaa",
-      :password_confirmation => "aaaa",
-      :firstname => "aaa",
-      :lastname => "aaa",
-      :dob => "1-1-1999"
-    )
+    user = Factory(:user)
     get :edit, :id => user
     assert_tag :tag => "form", :attributes => {:action => "/users/#{user.id}", :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "user_username"}
@@ -60,14 +53,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "update action should update the user and redirects to user page" do
-    user = User.create(
-      :username => "Whatever lah", 
-      :password => "aaaa",
-      :password_confirmation => "aaaa",
-      :firstname => "aaa",
-      :lastname => "aaa",
-      :dob => "1-1-1999"
-    )
+    user = Factory(:user)
     parameters = {
       :id => user, 
       :user => {
@@ -92,14 +78,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "show action should show the users" do
-    user = User.create(
-      :username => "Whatever lah", 
-      :password => "aaaa",
-      :password_confirmation => "aaaa",
-      :firstname => "aaa",
-      :lastname => "aaa",
-      :dob => "1-1-1999"
-    )
+    user = Factory(:user)
     # show action
     get :show, :id => user, :user => user
     # @user should fetch the right record
@@ -107,14 +86,7 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "destroy action should destroy record" do
-    user = User.create(
-      :username => "Whatever lah", 
-      :password => "aaaa",
-      :password_confirmation => "aaaa",
-      :firstname => "aaa",
-      :lastname => "aaa",
-      :dob => "1-1-1999"
-    )
+    user = Factory(:user)
     user_count = User.count
     # destroy action
     delete :destroy, :id =>user
