@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ListsControllerTest < ActionController::TestCase
   test "index action should retrieve all lists" do
+    Factory(:list)
     # Index action does exist in controller
     # Index view is present
     get :index
@@ -29,7 +30,7 @@ class ListsControllerTest < ActionController::TestCase
   end
 
   test "edit action should present an edit form" do
-    list = List.create(:subject => "hahaha")
+    list = Factory(:list)
     get :edit, :id => list
     assert_tag :tag => "form", :attributes => {:action => "/lists/#{list.id}", :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "list_subject"}
@@ -37,7 +38,7 @@ class ListsControllerTest < ActionController::TestCase
   end
 
   test "update action should update the list and redirects to list page" do
-    list = List.create(:subject => "initial value")
+    list = Factory(:list)
     parameters = {
       :id => list, 
       :list => {:subject => "lalalallaa"}
@@ -52,18 +53,19 @@ class ListsControllerTest < ActionController::TestCase
   end
 
   test "show action should show the lists" do
-    list = List.create(:subject => "hallo")
+    list = Factory(:list)
     (1..2).each do |n| 
-      Todo.create(:subject => n.to_s, :list => list) 
+      Factory(:todo, :list => list)
     end
     # show action
     get :show, :id => list, :list => list
     # @list should fetch the right record
     assert_equal list, assigns(:list)
+    assert list.todos.size > 0
   end
 
   test "destroy action should destroy record" do
-    list = List.create(:subject => "delete me")
+    list = Factory(:list)
     list_count = List.count
     # destroy action
     delete :destroy, :id =>list

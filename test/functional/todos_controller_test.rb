@@ -4,7 +4,7 @@ class TodosControllerTest < ActionController::TestCase
   test "index action should retrieve all todos" do
     # Index action does exist in controller
     # Index view is present
-    list = List.create(:subject => "hmmmmm")
+    list = Factory(:list)
     get :index, :list_id => list
 
     # @todos == Todo.all
@@ -12,7 +12,7 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "new action should present a new form" do
-    list = List.create(:subject => "wah")
+    list = Factory(:list)
     get :new, :list_id => list
     assert_tag :tag => "form", :attributes => {:action => list_todos_path(list), :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "todo_subject"}
@@ -20,7 +20,7 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "create action should create new todo and redirects to parent list show page" do
-    list = List.create(:subject => "hohoho")
+    list = Factory(:list)
     parameters = { :list_id => list, :todo => { :subject => "Whatever lah" } }
     todo_count = Todo.count
     # create action
@@ -34,8 +34,8 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "edit action should present an edit form" do
-    list = List.create(:subject => "hohoho")
-    todo = Todo.create(:subject => "hahaha")
+    todo = Factory(:todo)
+    list = todo.list
     get :edit, :id => todo, :list_id => list
     assert_tag :tag => "form", :attributes => {:action => list_todo_path(list), :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "todo_subject"}
@@ -43,8 +43,8 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "update action should update the todo and redirects to todo page" do
-    list = List.create(:subject => "hohoho")
-    todo = Todo.create(:subject => "initial value", :list => list)
+    todo = Factory(:todo)
+    list = todo.list
     parameters = {
       :list_id => list,
       :id => todo, 
@@ -61,8 +61,8 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "show action should show the todos" do
-    list = List.create(:subject => "troublesome")
-    todo = Todo.create(:subject => "hallo")
+    todo = Factory(:todo)
+    list = todo.list
     # show action
     get :show, :id => todo, :list_id => list
     # @todo should fetch the right record
@@ -70,8 +70,8 @@ class TodosControllerTest < ActionController::TestCase
   end
 
   test "destroy action should destroy record" do
-    todo = Todo.create(:subject => "delete me")
-    list = List.create(:subject => "hohoho")
+    todo = Factory(:todo)
+    list = todo.list
     todo_count = Todo.count
     # destroy action
     delete :destroy, :id =>todo, :list_id => list
