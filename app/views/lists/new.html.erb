@@ -1,4 +1,4 @@
-<% form_for @list do |form| %>
+<% form_for @list, :url => user_lists_path(@user), :html => {:method => :post} do |form| %>
   <%= form.label :subject %>
   <%= form.text_field :subject %>
   <%= form.submit "Create" %>

@@ -8,6 +8,7 @@ end
 
 Factory.define :list do |f|
   f.subject "hallo"
+  f.user {|a| a.association(:user) }
 end
 
 Factory.define :todo do |f|

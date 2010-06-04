@@ -12,33 +12,41 @@ class ListsControllerTest < ActionController::TestCase
   end
 
   test "new action should present a new form" do
-    get :new
-    assert_tag :tag => "form", :attributes => {:action => "/lists", :method => "post"}
+    user = Factory(:user)
+    get :new, :user_id => user
+    assert_tag :tag => "form", :attributes => {:action => user_lists_path(user), :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "list_subject"}
     assert_tag :tag => "input", :attributes => {:value => "Create"}
   end
 
   test "create action should create new list and redirects to index page" do
-    parameters = { :list => { :subject => "Whatever lah" } }
+    # should have a user
+    user = Factory(:user)
+    user_list_count = user.lists.size
+    parameters = {:user_id => user.id, :list => { :subject => "Whatever lah" } }
     list_count = List.count
     # create action
     post :create, parameters
-    # redirected to index page
-    assert_redirected_to lists_path
-    # +1 list
+    # redirected to user show page
+    assert_redirected_to user_path(user)
+    # +1 user's list
     assert_equal list_count + 1, List.count
+    user.reload
+    assert_equal user_list_count + 1, user.lists.size
   end
 
   test "edit action should present an edit form" do
-    list = Factory(:list)
+    user = Factory(:user)
+    list = Factory(:list, :user => user)
     get :edit, :id => list
-    assert_tag :tag => "form", :attributes => {:action => "/lists/#{list.id}", :method => "post"}
+    assert_tag :tag => "form", :attributes => {:action => user_list_path(user, list), :method => "post"}
     assert_tag :tag => "input", :attributes => {:id => "list_subject"}
     assert_tag :tag => "input", :attributes => {:value => "Update"}
   end
 
   test "update action should update the list and redirects to list page" do
     list = Factory(:list)
+    user = list.user
     parameters = {
       :id => list, 
       :list => {:subject => "lalalallaa"}
@@ -46,14 +54,15 @@ class ListsControllerTest < ActionController::TestCase
     # update action
     post :update, parameters
     # redirected to index page
-    assert_redirected_to lists_path
+    assert_redirected_to user_path(user) 
     # attributes are updated
     list.reload
     assert_equal "lalalallaa", list.subject
   end
 
   test "show action should show the lists" do
-    list = Factory(:list)
+    user = Factory(:user)
+    list = Factory(:list, :user => user)
     (1..2).each do |n| 
       Factory(:todo, :list => list)
     end
@@ -70,7 +79,7 @@ class ListsControllerTest < ActionController::TestCase
     # destroy action
     delete :destroy, :id =>list
     # redirected to index page
-    assert_redirected_to lists_path
+    assert_redirected_to user_path(list.user) 
     # record deleted
     # List.all - 1
     assert_equal list_count - 1, List.count

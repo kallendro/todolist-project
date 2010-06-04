@@ -77,12 +77,23 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal "2-1-1999", user.dob
   end
 
-  test "show action should show the users" do
+  test "show action should show the user and his lists" do
+    # make sure that user has many lists
     user = Factory(:user)
+    list = Factory(:list, :user => user)
     # show action
     get :show, :id => user, :user => user
     # @user should fetch the right record
     assert_equal user, assigns(:user)
+    assert_equal list, assigns(:user).lists.first
+    # assert that lists table exists on show page
+    assert_tag :tag => "table", :attributes => {:id => "list-table-#{user.id}"}
+    # assert that lists table rows are same as user.lists
+    assert_tag :tag => "td", :attributes => {:id => "list-table-row-#{list.id}"}
+    assert_tag :tag => "a", :attributes => {:href => edit_user_list_path(user,list) }
+    assert_tag :tag => "a", :attributes => {:href => list_path(list), :id => "delete-#{list.id}" }
+    assert_tag :tag => "a", :attributes => {:href => list_path(list)}
+    assert_tag :tag => "a", :attributes => {:href => new_user_list_path(user) }
   end
 
   test "destroy action should destroy record" do

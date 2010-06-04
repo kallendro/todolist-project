@@ -2,4 +2,22 @@ username: <%= @user.username %> <br/>
 firstname: <%= @user.firstname %> <br/>
 lastname: <%= @user.lastname %> <br/>
 date of birth: <%= @user.dob %> <br/>
+Lists:<br/>
+<table id="list-table-<%= @user.id %>">
+<% for list in @user.lists  %>
+<tr>
+  <td id="list-table-row-<%= list.id  %>">
+    <%= link_to list.subject, list_path(list) %>
+  </td>
+  <td>
+    <%= link_to "Edit", edit_user_list_path(@user,list) %>
+  </td>
+  <td>
+    <%= link_to "Delete", list_path(list), :method => :delete, :id => "delete-#{list.id}" %>
+  </td>
+</tr>
+<% end %>
+</table><br/>
+<%= link_to "Add new list", new_user_list_path(@user) %><br/><br/>
+
 <%= link_to "Back", users_path %> 
